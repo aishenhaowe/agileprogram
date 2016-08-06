@@ -1,8 +1,7 @@
-import java.util.*;
 
 public class GeneratePrimes
 {
-	private static boolean[] f;
+	private static boolean[] isCrossed;
 	private static int[] result;
 	
     public static int [] generatePrimes(int maxValue)
@@ -21,28 +20,34 @@ public class GeneratePrimes
 
     private static void initializeArrayOfIntegers(int maxValue)
     {
-    	f = new boolean[maxValue + 1];
-    	f[0] = f[1] = false;
-        // initialize the array to true
-        for (int i = 2; i < f.length; i++)
-            f[i] = true;
+    	isCrossed = new boolean[maxValue + 1];
+    	isCrossed[0] = isCrossed[1] = false;
+        for (int i = 2; i < isCrossed.length; i++)
+            isCrossed[i] = true;
     }
     
     private static void crossOutMultiples()
     {
-    	int i;
-    	int j;
+    	double maxPrimeFactor = Math.sqrt(isCrossed.length) + 1;
     	
-        for (i = 2; i < Math.sqrt(f.length) + 1; i++)
+        for (int i = 2; i < maxPrimeFactor; i++)
         {
-        	if (f[i])
-        	{
-                for (j = 2 * i; j < f.length; j += i)
-                {
-                     f[j] = false;  // multiple is not primes
-                }	        		
-        	}
+        	if (notCrossed(i))
+        		crossOutMultiplesOf(i);
         }
+    }
+    
+    private static void crossOutMultiplesOf(int i)
+    {
+    	for (int multiple = 2 * i; multiple < isCrossed.length; multiple += i)
+    	{
+    		isCrossed[multiple] = false;
+    	}
+    }
+    
+    private static boolean notCrossed(int i)
+    {
+    	return isCrossed[i] == true;
     }
     
     private static void putUncrossedIntegerIntoRsult()
@@ -51,18 +56,18 @@ public class GeneratePrimes
     	int j;
     	int count = 0;
     	
-        for (i = 0; i < f.length; i++)
+        for (i = 0; i < isCrossed.length; i++)
         {
-             if (f[i])
+             if (isCrossed[i])
                  count++;
         }
 
         result = new int[count];
 
         // move the primes into the result
-        for (i = 0, j = 0; i < f.length; i++)
+        for (i = 0, j = 0; i < isCrossed.length; i++)
         {
-             if (f[i])
+             if (isCrossed[i])
                 result[j++] = i;
         }
     }
