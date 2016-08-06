@@ -2,9 +2,8 @@ import java.util.*;
 
 public class GeneratePrimes
 {
-	private static int s;
 	private static boolean[] f;
-	private static int[] primes;
+	private static int[] result;
 	
     public static int [] generatePrimes(int maxValue)
     {
@@ -12,37 +11,33 @@ public class GeneratePrimes
     		return new int[0];
     	else
     	{
-    		initializeSieve(maxValue);
-    		sieve();
-    		loadPrimes();
+    		initializeArrayOfIntegers(maxValue);
+    		crossOutMultiples();
+    		putUncrossedIntegerIntoRsult();
     		
-    		return primes;
+    		return result;
     	}
     }
 
-    private static void initializeSieve(int maxValue)
+    private static void initializeArrayOfIntegers(int maxValue)
     {
-    	s = maxValue + 1;
-    	f = new boolean[s];
-    	int i;
+    	f = new boolean[maxValue + 1];
+    	f[0] = f[1] = false;
         // initialize the array to true
-        for (i = 0; i < s; i++)
+        for (int i = 2; i < f.length; i++)
             f[i] = true;
-
-        // get rid of known non-primes
-        f[0] = f[1] = false;
     }
     
-    private static void sieve()
+    private static void crossOutMultiples()
     {
     	int i;
     	int j;
     	
-        for (i = 2; i < Math.sqrt(s) + 1; i++)
+        for (i = 2; i < Math.sqrt(f.length) + 1; i++)
         {
         	if (f[i])
         	{
-                for (j = 2 * i; j < s; j += i)
+                for (j = 2 * i; j < f.length; j += i)
                 {
                      f[j] = false;  // multiple is not primes
                 }	        		
@@ -50,25 +45,25 @@ public class GeneratePrimes
         }
     }
     
-    private static void loadPrimes()
+    private static void putUncrossedIntegerIntoRsult()
     {
     	int i;
     	int j;
     	int count = 0;
     	
-        for (i = 0; i < s; i++)
+        for (i = 0; i < f.length; i++)
         {
              if (f[i])
                  count++;
         }
 
-        primes = new int[count];
+        result = new int[count];
 
         // move the primes into the result
-        for (i = 0, j = 0; i < s; i++)
+        for (i = 0, j = 0; i < f.length; i++)
         {
              if (f[i])
-                primes[j++] = i;
+                result[j++] = i;
         }
     }
 }
