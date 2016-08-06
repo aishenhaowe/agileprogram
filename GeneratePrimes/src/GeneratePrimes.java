@@ -54,15 +54,8 @@ public class GeneratePrimes
     {
     	int i;
     	int j;
-    	int count = 0;
-    	
-        for (i = 0; i < isCrossed.length; i++)
-        {
-             if (isCrossed[i])
-                 count++;
-        }
 
-        result = new int[count];
+        result = new int[numberOfUncrossedInteger()];
 
         // move the primes into the result
         for (i = 0, j = 0; i < isCrossed.length; i++)
@@ -70,5 +63,18 @@ public class GeneratePrimes
              if (isCrossed[i])
                 result[j++] = i;
         }
+    }
+    
+    private static int numberOfUncrossedInteger()
+    {
+    	int count = 0;
+    	
+    	for (int i = 2; i < isCrossed.length; i++)
+    	{
+    		if (notCrossed(i))
+    			count++;
+    	}
+    	
+    	return count;
     }
 }
